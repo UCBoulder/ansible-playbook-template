@@ -1,3 +1,14 @@
+.vscode/
+collections/*
+!collections/requirements.yml
+tests/output
+tests/runner
+docs/build
+docs/source/modules
+test_results
+.pytest_cache
+.vagrant
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
