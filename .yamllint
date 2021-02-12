@@ -1,7 +1,14 @@
 ---
+# This file is derived from a template repo, if making global changes, modify here:
+# https://github.com/CUB-OIT-PE/ansible-playbook-template
+#
 # Based on ansible-lint config
 extends: default
 
+ignore: |
+  collections/*
+  !collections/requirements.yml
+  
 rules:
   braces:
     max-spaces-inside: 1
