@@ -1,7 +1,3 @@
 ---
 - name: Converge
-  hosts: all
-  tasks:
-    - name: "Include ansible-playbook-template"
-      include_role:
-        name: "ansible-playbook-template"
+  ansible.builtin.import_playbook: ../../your_playbook_here.yml
