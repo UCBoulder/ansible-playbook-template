@@ -1,6 +1,11 @@
-.vscode/
+..vscode/
+
 collections/*
 !collections/requirements.yml
+roles/*
+!roles/requirements.yml
+
+
 tests/output
 tests/runner
 docs/build
