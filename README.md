@@ -18,14 +18,14 @@ Playbook Dependencies
 
 A list of other roles or collections hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
-Collection and role requirements are listed in their respective directories:
+Collection and role requirements are listed in their respective directories (for compatability with AWX):
 collections/requirements.yml
 roles/requirements.yml
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Including an example of how to use your playbook (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: servers
       roles:
@@ -43,7 +43,19 @@ Because we use Red Hat it is best to try to test in as close to a redhat environ
 
 If you do not know these values, you can locate them [here](https://oit.colorado.edu/services/consulting-professional-services/systems-engineering/help/software/redhat-linux-license).
 
+In addition, the molecule driver, container name, container image, and command can be overridden with the following environment variables:
+
+  - CONTAINER_RT: This defaults to podman, realistically podman|docker will probably be the only choices here.
+  - MOLECULE_DISTRO: This defaults to "rhel8".
+  - MOLECULE_IMAGE: This defaults to "registry.access.redhat.com/ubi8/ubi-init".
+  - MOLECULE_COMMAND: This defaults to "/usr/sbin/init".
+
 It is recommended that you create a molecule scenario per playbook, for example if you have an install playbook, create an install scenario and import the install playbook to test. A default molecule scenario has been provided for you in molecule/defaults, this can be used as a template to create alternate scenarios, copy the files into a new directory/scenario. For simple work the only adjustement needed should be changing the location if the playbook in the converge.yml file.
+
+Github Workflows
+----------------
+
+An example Github workflow 'default.yml' has been provided in the repository. The file has been commented to indicate where you need to make modifications for your particular needs. This workflow WILL NOT work out of the box, changes are necessary.
 
 License
 -------
@@ -55,4 +67,4 @@ Author Information
 
 Regents of the University of Colorado
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+An optional section for the playbook authors to include contact information, or a website (HTML is not allowed).
