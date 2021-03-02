@@ -27,7 +27,7 @@
         content: |
           molecule ALL=(ALL) NOPASSWD:ALL
 
-    - name: 'Unregister Container with RHSM if running in Docker'
+    - name: 'Register Container with RHSM if running in Docker'
       community.general.redhat_subscription:
         activationkey: "{{ lookup('env', 'RHSM_ACTIVATION_KEY') }}"
         org_id: "{{ lookup('env', 'RHSM_ORG_ID') }}"
