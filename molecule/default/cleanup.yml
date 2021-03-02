@@ -4,7 +4,7 @@
   gather_facts: true
   tasks:
 
-    - name: 'Unregister Container with RHSM'
+    - name: 'Unregister Container with RHSM if running in Docker'
       community.general.redhat_subscription:
         state: absent
       when: ansible_distribution == "RedHat" and lookup('env', 'CONTAINER_RT') == "docker"
