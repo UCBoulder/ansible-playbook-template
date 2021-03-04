@@ -1,14 +1,7 @@
 ---
 name: "install"
 on:
-  push:
-    # Set the paths you wish to trigger the workflow here
-    paths:
-      - 'default.yml'
-      - 'vars/main.yml'
-      - '.github/workflows/default.yml'
-      - 'molecule/default/**'
-      - 'molecule/base.yml'
+  # Our workflow encourages/requires PRs, to save resources we only test on PR not push.
   pull_request:
     # Set the paths you wish to trigger the workflow here
     paths:
