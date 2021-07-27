@@ -6,9 +6,9 @@
 extends: default
 
 ignore: |
-  collections/*
+  collections/
   !collections/requirements.yml
-  roles/*
+  roles/
   !roles/requirements.yml
   
 rules:
