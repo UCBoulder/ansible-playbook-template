@@ -1,0 +1,47 @@
+---
+name: "Linting Tests"
+on:
+  # Our workflow encourages/requires PRs, to save resources we only test on PR not push.
+  pull_request:
+    # Set the paths you wish to trigger the workflow here
+    paths:
+      - '*.yml'
+      - 'vars/*.yml'
+      - 'tasks/*.yml'
+      - '.github/workflows/default.yml'
+  # Allow for manual triggering of jobs, can be handy for debugging and doesn't hurt.
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    env:
+      PY_COLORS: 1
+      ANSIBLE_FORCE_COLOR: 1
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9.x
+        uses: actions/setup-python@v2
+        with:
+          # For speed try to use a version of python that is cached on Github's runners:
+          # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#python
+          python-version: 3.9
+
+      - name: Install Package Dependencies
+        run: |
+          sudo apt install apt-transport-https ca-certificates curl software-properties-common
+          python -m pip install --upgrade pip
+          pip install ansible ansible-lint yamllint
+
+      - name: Run YAMLlint tests
+        run: >-
+          yamllint --version &&
+          ansible --version &&
+          yamllint .
+
+      - name: 'Run Ansible lint tests'
+        run: >-
+          ansible-lint --version &&
+          ansible-lint
