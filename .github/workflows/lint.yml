@@ -36,12 +36,23 @@ jobs:
           pip install ansible ansible-lint yamllint
 
       - name: Run YAMLlint tests
-        run: >-
-          yamllint --version &&
-          ansible --version &&
+        run: |
+          yamllint --version
+          ansible --version
           yamllint .
 
+      # In order for the linter to truly work collections and roles need to be installed.
+      - name: Install roles and collections
+        run: |
+          if [ -e collections/requirements.yml ]; then
+            ansible-galaxy install -r collections/requirements.yml
+          fi
+          if [ -e roles/requirements.yml ]; then
+            ansible-galaxy install -r roles/requirements.yml
+          fi
+
       - name: 'Run Ansible lint tests'
-        run: >-
-          ansible-lint --version &&
+        run: |
+          ansible-lint --version
           ansible-lint
+          ansible-lint *.yml
