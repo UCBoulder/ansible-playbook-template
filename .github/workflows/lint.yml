@@ -6,53 +6,44 @@ on:
     # Set the paths you wish to trigger the workflow here
     paths:
       - '*.yml'
-      - 'vars/*.yml'
+      - '.github/workflows/lint.yml'
       - 'tasks/*.yml'
-      - '.github/workflows/default.yml'
+      - 'vars/*.yml'
   # Allow for manual triggering of jobs, can be handy for debugging and doesn't hurt.
   workflow_dispatch:
 
+# References
+# https://github.com/actions/setup-python
+# https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
 jobs:
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       PY_COLORS: 1
       ANSIBLE_FORCE_COLOR: 1
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.9.x
-        uses: actions/setup-python@v2
+      # For performance, use a Python version that is cached on GitHub's runner
+      # images (see the Python section of the Ubuntu README linked in comments
+      # above).
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
         with:
-          # For speed try to use a version of python that is cached on Github's runners:
-          # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md#python
-          python-version: 3.9
+          python-version: '3.10'
 
       - name: Install Package Dependencies
         run: |
-          sudo apt install apt-transport-https ca-certificates curl software-properties-common
-          python -m pip install --upgrade pip
-          pip install ansible ansible-lint yamllint
+          pip install ansible ansible-lint jmespath yamllint
 
       - name: Run YAMLlint tests
-        run: |
-          yamllint --version
-          ansible --version
+        run: >-
+          yamllint --version &&
+          ansible --version &&
           yamllint .
 
-      # In order for the linter to truly work collections and roles need to be installed.
-      - name: Install roles and collections
-        run: |
-          if [ -e collections/requirements.yml ]; then
-            ansible-galaxy install -r collections/requirements.yml
-          fi
-          if [ -e roles/requirements.yml ]; then
-            ansible-galaxy install -r roles/requirements.yml
-          fi
-
       - name: 'Run Ansible lint tests'
-        run: |
-          ansible-lint --version
+        run: >-
+          ansible-lint --version &&
           ansible-lint
-          ansible-lint *.yml
